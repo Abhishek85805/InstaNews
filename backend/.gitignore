@@ -1,0 +1,39 @@
+# Temporary files
+*.tmp
+*.log
+*.bak
+*.swp
+
+# IDE configurations
+.idea/
+.vscode/
+.DS_Store
+*.user
+*.iml
+
+# Build artifacts
+dist/
+build/
+target/
+node_modules/
+venv/
+__pycache__/
+
+# Package managers
+package-lock.json
+yarn.lock
+npm-shrinkwrap.json
+composer.lock
+go.mod
+go.sum
+poetry.lock
+
+# Sensitive data
+.env
+.secrets
+.ssh/
+*.key
+
+# Operating system files
+Thumbs.db
+_MACOSX/
