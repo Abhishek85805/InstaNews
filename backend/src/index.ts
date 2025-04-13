@@ -1,10 +1,12 @@
-import express, {NextFunction, Request, Response} from 'express';
+import express, {NextFunction, Request, response, Response} from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import {z} from 'zod';
 import bcrypt from 'bcryptjs';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
+import { generalNews } from './newsControllers';
+import redisConnection from './redis';
 
 dotenv.config();
 const app = express();
@@ -79,6 +81,37 @@ function authMiddleware(req: CustomRequest, res: Response, next: NextFunction){
 
     // call next function
     return next();
+}
+
+function validateCategories(req: CustomRequest, res: Response, next: NextFunction){
+    const {categories} = req.body;
+    if(!categories || typeof categories !== "string" || categories.trim() === ""){
+        res.status(400).json({
+            error: "Select atleast 1 category"
+        });
+        return;
+    }
+
+    const catArray = categories.split(" ");
+    if(catArray.length < 2){
+        res.status(400).json({
+            error: "Select atleast 1 category"
+        });
+        return;
+    }
+
+    type CategoriesType = "crime" | "sports"
+    const allowedCategories: CategoriesType[] = ["crime", "sports"]
+    const invalid = catArray.filter((val) => !allowedCategories.includes(val as CategoriesType));
+
+    if(invalid.length > 0){
+        res.status(400).json({
+            error: "Invalid Categories"
+        });
+        return;
+    }
+
+    next();
 }
 
 app.get('/', (req, res) => {
@@ -182,14 +215,9 @@ app.post('/api/v1/signin', async(req, res): Promise<any> => {
 });
 
 // update 
-app.patch('/api/v1/', authMiddleware, async(req: CustomRequest, res): Promise<any> => {
+app.patch('/api/v1/', authMiddleware, validateCategories, async(req: CustomRequest, res): Promise<any> => {
     // check if category is present in req.body
     const categories = req.body.categories.trim();
-    if(!categories){
-        res.status(400).json({
-            msg: "Select atleast one category"
-        });
-    }
 
     try {
         // update the resource
@@ -214,6 +242,16 @@ app.patch('/api/v1/', authMiddleware, async(req: CustomRequest, res): Promise<an
     }
 })
 
-app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
+// News Apis
+app.get('/api/v1/general/news', generalNews);
+
+
+
+app.listen(port, async() => {
+    try {
+        await redisConnection();
+        console.log(`Listening on port ${port}`);
+    } catch (error) {
+        console.log("Redis connection error")
+    }
 });
