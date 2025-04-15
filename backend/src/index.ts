@@ -14,7 +14,8 @@ const port = process.env.PORT || 3000;
 const prisma = new PrismaClient();
 
 const SignupSchema = z.object({
-    fullName: z.string().optional(),
+    firstName: z.string(),
+    lastName: z.string(),
     email: z.string().email(),
     password: z.string()// make it more strict before production
 });
@@ -93,7 +94,7 @@ function validateCategories(req: CustomRequest, res: Response, next: NextFunctio
     }
 
     const catArray = categories.split(" ");
-    if(catArray.length < 2){
+    if(catArray.length < 1){
         res.status(400).json({
             error: "Select atleast 1 category"
         });
@@ -149,7 +150,8 @@ app.post('/api/v1/signup', async(req, res): Promise<any> => {
         // Create the user
         const user = await prisma.user.create({
             data: {
-                fullName: req.body.fullName,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
                 email: req.body.email,
                 password: hashedPassword
             }
@@ -213,6 +215,23 @@ app.post('/api/v1/signin', async(req, res): Promise<any> => {
         })
     }
 });
+
+// Get User
+app.get('/api/v1/user', authMiddleware, async(req: CustomRequest, res): Promise<any> => {
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: req.userId
+            }
+        });
+    
+        return res.status(200).json(user);
+    } catch (error) {
+        return res.status(500).json({
+            msg: "Error while fetching user"
+        })
+    }
+})
 
 // update 
 app.patch('/api/v1/', authMiddleware, validateCategories, async(req: CustomRequest, res): Promise<any> => {
