@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CategoryButton } from "../components/category-button"
 import { Button } from "../components/ui/button"
 import { useCategory } from "../hooks/useCategory"
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { authAtom, isCategoryValidAtom } from "../jotai/atom";
+import { useAtomValue, useSetAtom } from "jotai";
 
 const categoryList = [
   "crime",
@@ -18,15 +20,20 @@ const categoryList = [
 ];
 
 function Categories() {
+  const auth = useAtomValue(authAtom);
+  const setIsCategoryValid = useSetAtom(isCategoryValidAtom);
   const navigate = useNavigate();
   const {categories, loading}: {categories: string[], loading: boolean} = useCategory();
-  const [buttons, setButtons] = useState(() => {
-    const intialState: Record<string, boolean> = {};
-    categoryList.forEach(cat => {
-      intialState[cat] = categories.includes(cat);
-    })
-    return intialState;
-  })
+  const [buttons, setButtons] = useState<Record<string, boolean>>({});
+  useEffect(() => {
+    if(!loading){
+      const initialState: Record<string, boolean> = {};
+      categoryList.forEach(cat => {
+        initialState[cat] = categories.includes(cat);
+      })
+      setButtons(initialState);
+    }
+  }, [categories])
 
   const toggleCategory = (category: string) => {
     setButtons((prev) => { 
@@ -48,10 +55,15 @@ function Categories() {
         }
       })
       toast.success(response.data.msg);
+      setIsCategoryValid(true);
       navigate("/home")
     } catch (error:any) {
       toast.error(error.response.data.error || "Something went wrong");
     }
+  }
+
+  if(!auth){
+    navigate('/signin')
   }
   if(loading){
     return <div>

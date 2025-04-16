@@ -6,6 +6,8 @@ import axios from 'axios';
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import {z} from 'zod';
+import { authAtom } from "../../jotai/atom";
+import { useSetAtom } from "jotai";
 
 const UserDataSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -19,6 +21,7 @@ export function SigninForm() {
     email: "",
     password: ""
   });
+  const setAuth = useSetAtom(authAtom);
   const navigate = useNavigate();
 
 
@@ -39,7 +42,8 @@ export function SigninForm() {
       const response = await axios.post('http://localhost:3000/api/v1/signin', userData);
       toast.success(response.data.msg);
       localStorage.setItem('token', response.data.token);
-      navigate('/categories');
+      setAuth(true);
+      navigate('/home');
     } catch (error: any) {
       toast.error(error.response.data.msg);
     }

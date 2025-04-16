@@ -6,6 +6,8 @@ import axios from 'axios';
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import {z} from 'zod';
+import { authAtom } from "../../jotai/atom";
+import { useSetAtom } from "jotai";
 
 const UserDataSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -17,6 +19,7 @@ const UserDataSchema = z.object({
 type UserDataType  = z.infer<typeof UserDataSchema>;
 
 export function SignupForm() {
+  const setAuth = useSetAtom(authAtom);
   const [userData, setUserData] = useState<UserDataType>({
     firstName: "",
     lastName: "",
@@ -45,6 +48,7 @@ export function SignupForm() {
       const response = await axios.post('http://localhost:3000/api/v1/signup', userData);
       toast.success(response.data.msg);
       localStorage.setItem('token', response.data.token);
+      setAuth(true);
       navigate('/categories');
     } catch (error: any) {
       toast.error(error.response.data.msg);

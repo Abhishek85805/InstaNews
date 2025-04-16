@@ -5,9 +5,27 @@ import Home from "./pages/Home";
 import Categories from "./pages/Categories";
 import NotExist from "./pages/NotExist";
 import { LandingPage } from "./pages/LandingPage";
-
+import { isCategoryValidAtomInit } from "./jotai/atom";
+import { useSetAtom } from "jotai";
+import { useEffect, useState } from "react";
 
 function App() {
+  const triggerInit = useSetAtom(isCategoryValidAtomInit);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    triggerInit()
+    .then(() => {
+      setLoading(false);
+    })
+    .catch(() => {
+      setLoading(false);
+    })
+  })
+
+  if(loading){
+    return <div>Loading...</div>
+  }
+
   return (
     <div>
       <BrowserRouter>

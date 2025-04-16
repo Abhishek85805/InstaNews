@@ -84,7 +84,7 @@ function authMiddleware(req: CustomRequest, res: Response, next: NextFunction){
     return next();
 }
 
-function validateCategories(req: CustomRequest, res: Response, next: NextFunction){
+function validateCategoriesMiddleware(req: CustomRequest, res: Response, next: NextFunction){
     const {categories} = req.body;
     if(!categories || typeof categories !== "string" || categories.trim() === ""){
         res.status(400).json({
@@ -231,10 +231,10 @@ app.get('/api/v1/user', authMiddleware, async(req: CustomRequest, res): Promise<
             msg: "Error while fetching user"
         })
     }
-})
+});
 
 // update 
-app.patch('/api/v1/', authMiddleware, validateCategories, async(req: CustomRequest, res): Promise<any> => {
+app.patch('/api/v1/', authMiddleware, validateCategoriesMiddleware, async(req: CustomRequest, res): Promise<any> => {
     // check if category is present in req.body
     const categories = req.body.categories.trim();
 
@@ -259,7 +259,14 @@ app.patch('/api/v1/', authMiddleware, validateCategories, async(req: CustomReque
             msg: "Error while updating the resource"
         })
     }
-})
+});
+
+// Validate Category Route
+app.post('/api/v1/validate-category', validateCategoriesMiddleware, async(req, res): Promise<any> => {
+    return res.status(200).json({
+        msg: "Categories are valid"
+    });
+});
 
 // News Apis
 app.get('/api/v1/general/news', generalNews);
