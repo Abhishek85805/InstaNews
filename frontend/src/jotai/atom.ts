@@ -22,5 +22,5 @@ export const isCategoryValidAtomInit = atom(null, async (_get, set) => {
         return;
     }
 });
-
-
+export const platformAtom = atom<string>("");
+export const categoryAtom = atom<string>("");

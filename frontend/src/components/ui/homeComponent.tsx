@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
 import { useUserDetails } from "../../hooks/useUserDetails"
 import { Sidebar } from "./sidebar";
 import { useNews } from "../../hooks/useNews";
 import { Mainbar } from "./mainbar";
+import { Rightbar } from "./right-bar";
+
 export function HomeComponent(){
-    const [selectedCategory, setSelectedCategory] = useState("");
     const {user, loading}: {
         user: {
             firstName: string,
@@ -16,10 +16,7 @@ export function HomeComponent(){
         loading: boolean
     } = useUserDetails();
 
-    // useEffect(() => {
-    //     console.log(selectedCategory)
-    // }, [selectedCategory]);
-    const {news, loadingNews} = useNews({ selectedCategory, platform: "web" })
+    const {news, loadingNews} = useNews()
 
     if(loading){
         return (
@@ -28,9 +25,10 @@ export function HomeComponent(){
     }
 
     return (
-        <div className="flex h-full bg-neutral-800 text-gray-200">
-            <Sidebar user={user} setSelectedCategory={setSelectedCategory}/>
+        <div className="flex h-full bg-black text-gray-200">
+            <Sidebar user={user}/>
             <Mainbar news={news} loadingNews={loadingNews}/>
+            <Rightbar/>
         </div>
     )
 }

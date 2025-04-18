@@ -101,8 +101,8 @@ function validateCategoriesMiddleware(req: CustomRequest, res: Response, next: N
         return;
     }
 
-    type CategoriesType = "crime" | "sports"
-    const allowedCategories: CategoriesType[] = ["crime", "sports"]
+    type CategoriesType = "crime" | "sports" | "general"
+    const allowedCategories: CategoriesType[] = ["crime", "sports", "general"]
     const invalid = catArray.filter((val) => !allowedCategories.includes(val as CategoriesType));
 
     if(invalid.length > 0){

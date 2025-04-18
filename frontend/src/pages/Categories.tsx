@@ -9,6 +9,7 @@ import { authAtom, isCategoryValidAtom } from "../jotai/atom";
 import { useAtomValue, useSetAtom } from "jotai";
 
 const categoryList = [
+  "general",
   "crime",
   "sports",
   "world",
