@@ -1,6 +1,7 @@
 import { useAtomValue } from "jotai";
 import { authAtom, isCategoryValidAtom } from "../jotai/atom";
 import { useNavigate } from "react-router-dom";
+import { HomeComponent } from "../components/ui/homeComponent";
 
 function Home() {
   const auth = useAtomValue(authAtom);
@@ -10,13 +11,12 @@ function Home() {
   if(!auth){
     navigate('/signin');
   }
-  console.log(isCategoryValid);
   if(!isCategoryValid){
     navigate('/categories')
   }
   return (
-    <div>
-      Home
+    <div className="h-screen w-full">
+      <HomeComponent/>
     </div>
   )
 }
