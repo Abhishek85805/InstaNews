@@ -28,7 +28,7 @@ export function HomeComponent(){
         <div className="flex h-full bg-black text-gray-200">
             <Sidebar user={user}/>
             <Mainbar news={news} loadingNews={loadingNews}/>
-            <Rightbar/>
+            <Rightbar user={user}/>
         </div>
     )
 }

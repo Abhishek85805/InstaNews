@@ -15,8 +15,8 @@ export function Mainbar({news, loadingNews}: {news: any, loadingNews: boolean}){
     }
     return (
         <div className="flex-1 bg-black border border-black overflow-y-scroll">
-            <div className="flex border-b-[1px] border-b-neutral-800 text-2xl font-semibold justify-between">
-                {platforms.map(platform => <div key={platform} className={`p-[0.3rem] hover:bg-neutral-900 cursor-pointer w-full flex justify-center py-[1rem] ${selectedPlatform === platform ? 'text-gray-400' : 'text-gray-200'}`} onClick={() => setSelectedPlatform(platform)}>{platform[0].toUpperCase()+platform.slice(1)}</div>)}
+            <div className="sticky bg-black top-0 flex border-b-[1px] border-b-neutral-800 text-2xl font-semibold justify-between">
+                {platforms.map(platform => <div key={platform} className={`p-[0.3rem] hover:bg-neutral-900 cursor-pointer w-full flex justify-center py-[1rem] ${selectedPlatform === platform ? 'text-gray-200' : 'text-gray-400'}`} onClick={() => setSelectedPlatform(platform)}>{platform[0].toUpperCase()+platform.slice(1)}</div>)}
             </div>
             {
                 news.map((obj: any, idx: number) => (

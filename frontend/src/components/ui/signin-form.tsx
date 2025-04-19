@@ -48,7 +48,7 @@ export function SigninForm() {
       }
       setIsCategoryValid(true);
       setAuth(true);
-      navigate('/home');
+      navigate('/');
     } catch (error: any) {
       toast.error(error.response.data.msg);
     }

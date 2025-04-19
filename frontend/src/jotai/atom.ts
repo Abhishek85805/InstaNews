@@ -1,8 +1,9 @@
 import {atom} from 'jotai';
 import axios from 'axios';
+import { useResetAtom, atomWithReset } from 'jotai/utils';
 
-export const authAtom = atom<boolean>(!!localStorage.getItem('token'));
-export const isCategoryValidAtom = atom<boolean>(false);
+export const authAtom = atomWithReset<boolean>(!!localStorage.getItem('token'));
+export const isCategoryValidAtom = atomWithReset<boolean>(false);
 export const isCategoryValidAtomInit = atom(null, async (_get, set) => {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -22,5 +23,18 @@ export const isCategoryValidAtomInit = atom(null, async (_get, set) => {
         return;
     }
 });
-export const platformAtom = atom<string>("");
-export const categoryAtom = atom<string>("");
+export const platformAtom = atomWithReset<string>("");
+export const categoryAtom = atomWithReset<string>("");
+
+//Reset Atoms
+export const useResetAllAtoms = () => {
+    const resetAuth = useResetAtom(authAtom);
+    const resetPlatform = useResetAtom(platformAtom);
+    const resetCategory = useResetAtom(categoryAtom);
+
+    return () => {
+        resetAuth();
+        resetPlatform();
+        resetCategory();
+    }
+};
