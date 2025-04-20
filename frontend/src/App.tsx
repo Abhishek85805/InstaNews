@@ -15,6 +15,7 @@ function App() {
   useEffect(() => {
     triggerInit()
     .then(() => {
+      console.log("Hello trigger init this side")
       setLoading(false);
     })
     .catch(() => {
@@ -23,7 +24,14 @@ function App() {
   })
 
   if(loading){
-    return <div>Loading...</div>
+    return (
+      <div className="bg-black h-screen">   
+        <div role="status" className="animate-pulse h-full flex flex-col justify-center items-center">
+            <div className="h-[3rem] w-[25rem] bg-gray-200 rounded-lg dark:bg-neutral-800 mb-4"></div>
+            <div className="h-[7rem] w-[35rem] bg-gray-200 rounded-lg dark:bg-neutral-800 mb-4"></div>
+        </div>
+      </div>
+    )
   }
 
   return (

@@ -20,7 +20,7 @@ export function HomeComponent(){
 
     if(loading){
         return (
-            <div>Loading...</div>
+            <div className="h-full bg-black">Loading...</div>
         )
     }
 
