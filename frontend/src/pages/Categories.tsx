@@ -12,7 +12,6 @@ const categoryList = [
   "general",
   "crime",
   "sports",
-  "world",
   "entertainment",
   "business",
   "health",

@@ -1,17 +1,19 @@
 import { useAtom } from "jotai"
 import { categoryAtom } from "../../jotai/atom"
-import { IconAlertHexagon } from '@tabler/icons-react';
-import { IconCpu } from '@tabler/icons-react';
-import { IconBallFootball } from '@tabler/icons-react'
 import { ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 import { useResetAllAtoms } from "../../jotai/atom";
+import { IconBallFootball, IconHospitalCircle, IconBusinessplan, IconMovie, IconFlask, IconCpu, IconAlertHexagon } from '@tabler/icons-react'
 
 const catToIcon: { [key: string]: ReactElement } = {
     "general": <IconCpu stroke={2} />,
     "crime": <IconAlertHexagon stroke={2} />,
-    "tech": <IconCpu stroke={2} />,
-    "sports": <IconBallFootball stroke={2} />
+    "technology": <IconCpu stroke={2} />,
+    "sports": <IconBallFootball stroke={2} />,
+    "health": <IconHospitalCircle stroke={2} />,
+    "science": <IconFlask stroke={2} />,
+    "business": <IconBusinessplan stroke={2} />,
+    "entertainment": <IconMovie stroke={2} />
 }
 
 export function Sidebar({user}: {

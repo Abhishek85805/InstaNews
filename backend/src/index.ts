@@ -5,7 +5,7 @@ import {z} from 'zod';
 import bcrypt from 'bcryptjs';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import { generalNews } from './newsControllers';
+import { businessNews, crimeNews, entertainmentNews, generalNews, healthNews, scienceNews, sportsNews, techNews } from './newsControllers';
 import redisConnection from './redis';
 
 dotenv.config();
@@ -101,8 +101,8 @@ function validateCategoriesMiddleware(req: CustomRequest, res: Response, next: N
         return;
     }
 
-    type CategoriesType = "crime" | "sports" | "general"
-    const allowedCategories: CategoriesType[] = ["crime", "sports", "general"]
+    type CategoriesType = "crime" | "sports" | "general" | "entertainment" | "business" | "health" | "science" | "technology"
+    const allowedCategories: CategoriesType[] = ["crime", "sports", "general", "entertainment", "business", "health", "science", "technology"]
     const invalid = catArray.filter((val) => !allowedCategories.includes(val as CategoriesType));
 
     if(invalid.length > 0){
@@ -270,6 +270,13 @@ app.post('/api/v1/validate-category', validateCategoriesMiddleware, async(req, r
 
 // News Apis
 app.get('/api/v1/general/news', generalNews);
+app.get('/api/v1/crime/news', crimeNews);
+app.get('/api/v1/sports/news', sportsNews);
+app.get('/api/v1/business/news', businessNews);
+app.get('/api/v1/technology/news', techNews);
+app.get('/api/v1/entertainment/news', entertainmentNews);
+app.get('/api/v1/health/news', healthNews);
+app.get('/api/v1/science/news', scienceNews);
 
 
 
