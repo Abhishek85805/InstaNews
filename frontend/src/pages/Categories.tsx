@@ -5,7 +5,7 @@ import { useCategory } from "../hooks/useCategory"
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { authAtom, isCategoryValidAtom } from "../jotai/atom";
+import { authAtom, isCategoryValidAtom, firstCategoryAtom } from "../jotai/atom";
 import { useAtomValue, useSetAtom } from "jotai";
 
 const categoryList = [
@@ -20,6 +20,7 @@ const categoryList = [
 ];
 
 function Categories() {
+  const setFirstCategory = useSetAtom(firstCategoryAtom);
   const auth = useAtomValue(authAtom);
   const setIsCategoryValid = useSetAtom(isCategoryValidAtom);
   const navigate = useNavigate();
@@ -46,6 +47,9 @@ function Categories() {
 
   async function onClick(){
     const selectedCategories = categoryList.filter(cat => buttons[cat]);
+    if(selectedCategories.length !== 0){
+      setFirstCategory(selectedCategories[0]);
+    }
     const categoryString = selectedCategories.join(" ");
 
     try {

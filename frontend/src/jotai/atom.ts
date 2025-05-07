@@ -4,6 +4,7 @@ import { useResetAtom, atomWithReset } from 'jotai/utils';
 
 export const authAtom = atomWithReset<boolean>(!!localStorage.getItem('token'));
 export const isCategoryValidAtom = atomWithReset<boolean>(false);
+export const firstCategoryAtom = atomWithReset<string>("");
 export const isCategoryValidAtomInit = atom(null, async (_get, set) => {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -14,7 +15,10 @@ export const isCategoryValidAtomInit = atom(null, async (_get, set) => {
         });
     
         const categories = res.data.categories;
-    
+        const categoriesArray = categories.split(" ");
+        if(categories && typeof categories === "string" && categories !== ""){
+            set(firstCategoryAtom, categoriesArray[0]);
+        }
         await axios.post("http://localhost:3000/api/v1/validate-category", { categories });
         
         set(isCategoryValidAtom, true);
@@ -23,7 +27,7 @@ export const isCategoryValidAtomInit = atom(null, async (_get, set) => {
         return;
     }
 });
-export const platformAtom = atomWithReset<string>("");
+export const platformAtom = atomWithReset<string>("news");
 export const categoryAtom = atomWithReset<string>("");
 
 //Reset Atoms

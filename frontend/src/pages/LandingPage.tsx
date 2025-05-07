@@ -24,7 +24,6 @@ export function LandingPage() {
       <Button text="Get Started" onClick={() =>{
         if(auth && isCategoryValid){
           navigate('/home');
-          console.log("Home")
         }
         else if(auth && !isCategoryValid) navigate('/categories');
         else navigate('/signin');

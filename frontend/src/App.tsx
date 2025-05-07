@@ -15,7 +15,6 @@ function App() {
   useEffect(() => {
     triggerInit()
     .then(() => {
-      console.log("Hello trigger init this side")
       setLoading(false);
     })
     .catch(() => {

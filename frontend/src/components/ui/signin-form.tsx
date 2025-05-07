@@ -6,7 +6,7 @@ import axios from 'axios';
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import {z} from 'zod';
-import { authAtom, isCategoryValidAtom } from "../../jotai/atom";
+import { authAtom, isCategoryValidAtom, firstCategoryAtom } from "../../jotai/atom";
 import { useSetAtom } from "jotai";
 
 const UserDataSchema = z.object({
@@ -21,6 +21,7 @@ export function SigninForm() {
     email: "",
     password: ""
   });
+  const setFirstCategory = useSetAtom(firstCategoryAtom);
   const setAuth = useSetAtom(authAtom);
   const setIsCategoryValid = useSetAtom(isCategoryValidAtom);
   const navigate = useNavigate();
@@ -43,9 +44,12 @@ export function SigninForm() {
       const response = await axios.post('http://localhost:3000/api/v1/signin', userData);
       toast.success(response.data.msg);
       localStorage.setItem('token', response.data.token);
-      if(response.data.categories == null || response.data.categories == ""){
+      const categories = response.data.user.categories;
+      if(categories == null || categories == ""){
         navigate('/categories');
       }
+      const categoriesArray = categories.split(" ");
+      setFirstCategory(categoriesArray[0]);
       setIsCategoryValid(true);
       setAuth(true);
       navigate('/home');
