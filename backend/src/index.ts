@@ -7,6 +7,8 @@ import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import { businessNews, crimeNews, entertainmentNews, generalNews, healthNews, scienceNews, sportsNews, techNews } from './newsControllers';
 import redisConnection from './redis';
+import { businessReddit, crimeReddit, entertainmentReddit, generalReddit, healthReddit, scienceReddit, sportsReddit, techReddit } from './redditController';
+import { businessTwitter, crimeTwitter, entertainmentTwitter, generalTwitter, healthTwitter, scienceTwitter, sportsTwitter, technologyTwitter } from './twitterController';
 
 dotenv.config();
 const app = express();
@@ -277,6 +279,27 @@ app.get('/api/v1/technology/news', techNews);
 app.get('/api/v1/entertainment/news', entertainmentNews);
 app.get('/api/v1/health/news', healthNews);
 app.get('/api/v1/science/news', scienceNews);
+
+// Reddit Apis
+app.get('/api/v1/general/reddit', generalReddit);
+app.get('/api/v1/sports/reddit', sportsReddit);
+app.get('/api/v1/crime/reddit', crimeReddit);
+app.get('/api/v1/business/reddit', businessReddit);
+app.get('/api/v1/technology/reddit', techReddit);
+app.get('/api/v1/entertainment/reddit', entertainmentReddit);
+app.get('/api/v1/health/reddit', healthReddit);
+app.get('/api/v1/science/reddit', scienceReddit);
+
+
+// Twitter Apis
+app.get('/api/v1/general/twitter', generalTwitter);
+app.get('/api/v1/crime/twitter', crimeTwitter);
+app.get('/api/v1/sports/twitter', sportsTwitter);
+app.get('/api/v1/business/twitter', businessTwitter);
+app.get('/api/v1/technology/twitter', technologyTwitter);
+app.get('/api/v1/entertainment/twitter', entertainmentTwitter);
+app.get('/api/v1/health/twitter', healthTwitter);
+app.get('/api/v1/science/twitter', scienceTwitter);
 
 
 

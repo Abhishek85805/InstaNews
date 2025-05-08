@@ -11,7 +11,7 @@ export function NewsComponent({obj}: any){
                 <Link to={obj.url}>Read more</Link>
             </div>
             <div>
-                <img src={obj.urlToImage} alt="" className="rounded-md"/>
+                <img src={obj.urlToImage} alt="" className="rounded-md w-full"/>
             </div>
 
         </div>
